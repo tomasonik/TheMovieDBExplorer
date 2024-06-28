@@ -8,9 +8,11 @@
 import Foundation
 import Combine
 
+
 enum MovieDBError: Error {
     case invalidUrl
 }
+
 
 enum MovieDBEndpoint {
     
@@ -27,13 +29,16 @@ enum MovieDBEndpoint {
         request(path: nowPlayingPath)
     }
     
+    
     static func moveDetails(id: Movie.Id) -> AnyPublisher<MovieDetails, Error> {
         request(path: details + String(id))
     }
     
+    
     static func imageUrl(path: String) -> URL? {
         URL(string: posterBaseUrl + path)
     }
+    
     
     static func request<Response: Decodable>(path: String, apiKey: String = apiKey) -> AnyPublisher<Response, Error> {
         guard let url = URL(string: baseUrl + path) else {
@@ -54,6 +59,7 @@ enum MovieDBEndpoint {
             .eraseToAnyPublisher()
     }
     
+    
 }
 
 extension URLRequest {
@@ -61,4 +67,5 @@ extension URLRequest {
     mutating func authWithMovieDB() {
         setValue("Bearer \(MovieDBEndpoint.apiKey)", forHTTPHeaderField: "Authorization")
     }
+    
 }

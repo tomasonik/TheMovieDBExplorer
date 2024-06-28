@@ -13,7 +13,10 @@ protocol Configurable<ViewModel> {
     associatedtype ViewModel
     
     func configure(viewModel: ViewModel)
+    
+    
 }
+
 
 extension Configurable where Self: UICollectionViewCell {
     
@@ -22,5 +25,6 @@ extension Configurable where Self: UICollectionViewCell {
             cell.configure(viewModel: viewModel)
         }
     }
+    
     
 }

@@ -56,20 +56,24 @@ final class MoviesListViewModel {
         handleFavouritingChanges()
     }
     
+    
     // MARK: -
     
     func onViewWillAppear() {
         loadMovies()
     }
     
+    
     func movieItem(with id: Movie.Id) -> MovieItemViewModel? {
         viewModels[id]
     }
+    
     
     func tappedItem(movieId: Movie.Id) {
         guard let movie = viewModels[movieId] else { return }
         coordinator.onEnteringMovie(movieId: movieId, title: movie.title)
     }
+    
     
     // MARK: -
     
@@ -77,6 +81,7 @@ final class MoviesListViewModel {
         guard viewStateSubject.value != .loading else { return }
         loadMovies()
     }
+    
     
     private func loadMovies() {
         viewStateSubject.value = .loading
@@ -104,6 +109,7 @@ final class MoviesListViewModel {
             .store(in: &cancellables)
     }
     
+    
     private func snapshot(from viewModels: [MovieItemViewModel]) -> DataSourceSnapshot {
         var snapshot = DataSourceSnapshot()
         snapshot.appendSections([0])
@@ -111,12 +117,25 @@ final class MoviesListViewModel {
         return snapshot
     }
     
+    
     private func handle(viewModels: [Movie.Id: MovieItemViewModel], snapshot: DataSourceSnapshot) {
         self.viewModels = viewModels
         viewStateSubject.value = .loaded
         self.snapshot = snapshot
         snapshotSubject.send(snapshot)
     }
+    
+
+    
+    private func handle(completion: Subscribers.Completion<Error>) {
+        switch completion {
+        case .finished:
+            viewStateSubject.value = .loaded
+        case .failure:
+            viewStateSubject.value = .error
+        }
+    }
+    
     
     private func viewModels(from models: [Movie], favouriteIds: Set<Int>) -> [MovieItemViewModel] {
         models.map {
@@ -128,14 +147,6 @@ final class MoviesListViewModel {
         }
     }
     
-    private func handle(completion: Subscribers.Completion<Error>) {
-        switch completion {
-        case .finished:
-            viewStateSubject.value = .loaded
-        case .failure:
-            viewStateSubject.value = .error
-        }
-    }
     
     private func toggleFavourite(movieId: Movie.Id) {
         guard let viewModel = viewModels[movieId] else { return }
@@ -172,6 +183,7 @@ final class MoviesListViewModel {
     }
     
 }
+
 
 private extension MovieItemViewModel {
     

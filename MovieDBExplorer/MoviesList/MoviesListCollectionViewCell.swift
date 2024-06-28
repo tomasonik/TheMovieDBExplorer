@@ -43,14 +43,17 @@ final class MoviesListCollectionViewCell: UICollectionViewCell, Configurable {
     
     private var viewModel: MovieItemViewModel?
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpView()
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     func configure(viewModel: MovieItemViewModel) {
         self.viewModel = viewModel
@@ -61,6 +64,7 @@ final class MoviesListCollectionViewCell: UICollectionViewCell, Configurable {
         let buttonImage = FavouritingConstant.tooglingIcon(isFavourite: viewModel.isFavourite)
         favouritingButton.setImage(buttonImage, for: .normal)
     }
+    
     
     // MARK: -
     
@@ -78,8 +82,10 @@ final class MoviesListCollectionViewCell: UICollectionViewCell, Configurable {
         backgroundColor = .darkGray
     }
     
+    
     @objc private func favoriteButtonAction() {
         viewModel?.toogleFavourite()
     }
+    
     
 }

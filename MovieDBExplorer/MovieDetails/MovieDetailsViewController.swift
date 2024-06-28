@@ -10,6 +10,7 @@ import UIKit
 import Combine
 import SDWebImage
 
+
 final class MovieDetailsViewController: UIViewController {
     
     private let imageView: UIImageView = {
@@ -65,6 +66,7 @@ final class MovieDetailsViewController: UIViewController {
     }
  
     override func viewDidLoad() {
+        super.viewDidLoad()
         configureView()
     }
     
@@ -84,6 +86,7 @@ final class MovieDetailsViewController: UIViewController {
 
     }
     
+    
     private func configureView() {
         title = viewModel.title
         view.backgroundColor = .white
@@ -101,15 +104,18 @@ final class MovieDetailsViewController: UIViewController {
             .store(in: &cancellable)
     }
     
+    
     private func configure(viewState: ViewState) {
         viewState == .loading ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
     }
+    
     
     private func configureDetails(movieAttributes: MovieAttributesViewModel?) {
         guard let movieAttributes else { return }
         imageView.sd_setImage(with: movieAttributes.posterUrl)
         movieAttributes.details.forEach(addDetails(_:))
     }
+    
     
     private func addDetails(_ record: MovieAttributesViewModel.Record) {
         let stackView = UIStackView()
@@ -135,6 +141,7 @@ final class MovieDetailsViewController: UIViewController {
         titleLabel.widthAnchor.constraint(equalTo: detailsStackView.widthAnchor, multiplier: 0.3).activate()
     }
     
+    
     private func configureBarButtonItem(isFavourite: Bool) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: FavouritingConstant.tooglingIcon(isFavourite: isFavourite),
@@ -144,8 +151,10 @@ final class MovieDetailsViewController: UIViewController {
         )
     }
     
+    
     @objc private func toogleFavourite() {
         viewModel.toogleFavourite()
     }
+    
     
 }

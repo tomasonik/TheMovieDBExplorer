@@ -133,7 +133,7 @@ final class MoviesListViewModelTests: XCTestCase {
     }
     
     
-    func testRefreshFavoriting_HasRefreshedViewModel_BecomesFavourite_ViewModelIsUpdated() throws {
+    func testRefreshFavoriting_BecomesFavourite_MovieItemIsUpdated() throws {
         try givenViewModelsLoaded()
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, false)
 
@@ -145,7 +145,7 @@ final class MoviesListViewModelTests: XCTestCase {
     }
     
     
-    func testRefreshFavoriting_HasRefreshedViewModel_BecomesNotFavourite_ViewModelIsUpdated() throws {
+    func testRefreshFavoriting_BecomesNotFavourite_MovieItemIsUpdated() throws {
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie3.id]
         try givenViewModelsLoaded()
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, true)
@@ -157,6 +157,21 @@ final class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, false)
     }
     
+    
+    // MARK: -
+    
+    func testTappedItem_NavigatesWithMovieId() throws {
+        try givenViewModelsLoaded()
+        viewModel.tappedItem(movieId: stubMovie1.id)
+        XCTAssertEqual(mockMovesListCoordinator.spyOnEnteringMovieId, [stubMovie1.id])
+    }
+    
+    
+    func testTappedItem_NavigatesWithMovieTitle() throws {
+        try givenViewModelsLoaded()
+        viewModel.tappedItem(movieId: stubMovie1.id)
+        XCTAssertEqual(mockMovesListCoordinator.spyOnEnteringMovieTitle, [stubMovie1.title])
+    }
     
     // MARK: -
     

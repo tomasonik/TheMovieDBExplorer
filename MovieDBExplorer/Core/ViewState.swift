@@ -8,9 +8,12 @@
 import Foundation
 import Combine
 
+
 enum ViewState {
     case empty, loading, loaded, error
 }
 
+
 typealias ViewStateSubject = CurrentValueSubject<ViewState, Never>
+
 typealias ViewStatePublisher = AnyPublisher<ViewState, Never>

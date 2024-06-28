@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 protocol MovieDetailsAssembling {
     
     func assemble(movieId: Movie.Id, title: String) -> UIViewController
@@ -26,5 +27,6 @@ final class MovieDetailsAssembler: MovieDetailsAssembling {
         
        return MovieDetailsViewController(viewModel: viewModel)
     }
+    
     
 }

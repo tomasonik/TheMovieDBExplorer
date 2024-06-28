@@ -12,7 +12,7 @@ Demo of testable MVVM-C architecture in Swift/Combine/UIKit
 ## Requirements
 - iOS 15.0 (tested on iOS 15.5, iOS 18)
 - Xcode 15.4
-- API: [TheMovieDB](https://developer.themoviedb.org/docs/getting-started) - API key i required
+- API: [TheMovieDB](https://developer.themoviedb.org/docs/getting-started) - API key is required
 
 ## Dependencies (SPM)
 - [SDWebImage](https://github.com/SDWebImage/SDWebImage)

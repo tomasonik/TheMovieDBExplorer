@@ -8,11 +8,13 @@
 import Foundation
 import UIKit
 
+
 protocol MoviesListAssembling {
     
     func assemble() -> UIViewController
     
 }
+
 
 final class MoviesListAssembler: MoviesListAssembling {
     
@@ -27,5 +29,6 @@ final class MoviesListAssembler: MoviesListAssembling {
         navigationController.pushViewController(moviesListViewController, animated: false)
         return navigationController
     }
+    
     
 }

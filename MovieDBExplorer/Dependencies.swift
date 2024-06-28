@@ -8,5 +8,7 @@
 import Foundation
 
 enum Dependencies {
+    
     static let moviesFavouritingService = MoviesFavouritingService()
+    
 }

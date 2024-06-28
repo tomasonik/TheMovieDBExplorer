@@ -31,6 +31,7 @@ final class MovieDetailsViewModelTests: XCTestCase {
         posterPath: "stubbedPosterPath"
     )
     
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockMoviesFavoritingService = MockMoviesFavoritingService()
@@ -95,12 +96,23 @@ final class MovieDetailsViewModelTests: XCTestCase {
     
     // MARK: -
     
+    func testOnViewWillAppear_Succeeds_ReturnsPosterUrl() throws {
+        viewModel.onViewWillAppear()
+        
+        stupMovieDetailsProvider.send(stubMovieDetails)
+      
+        XCTAssertEqual(
+            try getNextOutput(from: spyViewModel)?.posterUrl,
+            URL(string: "https://image.tmdb.org/t/p/originalstubbedBackdropPath")
+        )
+    }
+    
     func testOnViewWillAppear_Succeeds_ReturnsMovieAttributes() throws {
         viewModel.onViewWillAppear()
         
         stupMovieDetailsProvider.send(stubMovieDetails)
       
-        // TODO: localize strings; do not hardcoded localization in tests
+        // TODO: localize strings; do not hardcode localization in tests
         XCTAssertEqual(
             try getNextOutput(from: spyViewModel)?.details,
             [

@@ -12,7 +12,6 @@
 		4E04C3F82C2BF9DA00E07ADE /* MoviesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C3F72C2BF9DA00E07ADE /* MoviesListViewController.swift */; };
 		4E04C3FD2C2BF9DC00E07ADE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E04C3FC2C2BF9DC00E07ADE /* Assets.xcassets */; };
 		4E04C4002C2BF9DC00E07ADE /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 4E04C3FF2C2BF9DC00E07ADE /* Base */; };
-		4E04C40B2C2BF9DC00E07ADE /* MovieDBExplorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C40A2C2BF9DC00E07ADE /* MovieDBExplorerTests.swift */; };
 		4E04C4262C2BFA3100E07ADE /* MovieDBEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C4252C2BFA3100E07ADE /* MovieDBEndpoint.swift */; };
 		4E04C4282C2BFB3C00E07ADE /* MoviesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C4272C2BFB3C00E07ADE /* MoviesListViewModel.swift */; };
 		4E04C42C2C2C02A700E07ADE /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C42B2C2C02A700E07ADE /* Movie.swift */; };
@@ -63,9 +62,6 @@
 		4E04C3FF2C2BF9DC00E07ADE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4E04C4012C2BF9DC00E07ADE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E04C4062C2BF9DC00E07ADE /* MovieDBExplorerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieDBExplorerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4E04C40A2C2BF9DC00E07ADE /* MovieDBExplorerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBExplorerTests.swift; sourceTree = "<group>"; };
-		4E04C4142C2BF9DC00E07ADE /* MovieDBExplorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBExplorerUITests.swift; sourceTree = "<group>"; };
-		4E04C4162C2BF9DC00E07ADE /* MovieDBExplorerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBExplorerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4E04C4252C2BFA3100E07ADE /* MovieDBEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDBEndpoint.swift; sourceTree = "<group>"; };
 		4E04C4272C2BFB3C00E07ADE /* MoviesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListViewModel.swift; sourceTree = "<group>"; };
 		4E04C42B2C2C02A700E07ADE /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
@@ -120,7 +116,6 @@
 			children = (
 				4E04C3F22C2BF9DA00E07ADE /* MovieDBExplorer */,
 				4E04C4092C2BF9DC00E07ADE /* MovieDBExplorerTests */,
-				4E04C4132C2BF9DC00E07ADE /* MovieDBExplorerUITests */,
 				4E04C3F12C2BF9DA00E07ADE /* Products */,
 				4E04C4642C2DF7A900E07ADE /* Frameworks */,
 			);
@@ -159,20 +154,10 @@
 			isa = PBXGroup;
 			children = (
 				4E04C4672C2E7EE000E07ADE /* TestDoubles */,
-				4E04C40A2C2BF9DC00E07ADE /* MovieDBExplorerTests.swift */,
 				4E04C4562C2DE10F00E07ADE /* MoviesListViewModelTests.swift */,
 				4E4CC5D92C2E8C0B004A6E2D /* MovieDetailsViewModelTests.swift */,
 			);
 			path = MovieDBExplorerTests;
-			sourceTree = "<group>";
-		};
-		4E04C4132C2BF9DC00E07ADE /* MovieDBExplorerUITests */ = {
-			isa = PBXGroup;
-			children = (
-				4E04C4142C2BF9DC00E07ADE /* MovieDBExplorerUITests.swift */,
-				4E04C4162C2BF9DC00E07ADE /* MovieDBExplorerUITestsLaunchTests.swift */,
-			);
-			path = MovieDBExplorerUITests;
 			sourceTree = "<group>";
 		};
 		4E04C4292C2BFB8C00E07ADE /* MoviesList */ = {
@@ -410,7 +395,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E04C40B2C2BF9DC00E07ADE /* MovieDBExplorerTests.swift in Sources */,
 				4E4CC5DC2C2E8DB4004A6E2D /* MovieDetails+Stub.swift in Sources */,
 				4E04C4632C2DF30500E07ADE /* Publisher+Get.swift in Sources */,
 				4E04C45F2C2DED1800E07ADE /* MockMoviesFavoritingService.swift in Sources */,

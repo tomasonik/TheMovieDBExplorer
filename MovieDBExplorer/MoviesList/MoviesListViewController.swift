@@ -63,10 +63,12 @@ final class MoviesListViewController: UIViewController {
         viewModel.onViewWillAppear()
     }
     
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureFlowLayout()
     }
+    
     
     // MARK: -
     
@@ -80,6 +82,7 @@ final class MoviesListViewController: UIViewController {
             .store(in: &cancellables)
     }
 
+    
     private func configureFlowLayout() {
         let itemWidth = collectionView.bounds.width / Constant.columnsCount
         let itemHeight = itemWidth * Constant.itemSizeAspectRatio
@@ -89,6 +92,7 @@ final class MoviesListViewController: UIViewController {
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.invalidateLayout()
     }
+    
     
     private func handle(snapshot: MoviesListViewModel.DataSourceSnapshot) {
         dataSource.apply(snapshot)
