@@ -2,7 +2,7 @@
 //  MovieDBExplorerUITestsLaunchTests.swift
 //  MovieDBExplorerUITests
 //
-//  Created by Tomek on 26/06/2024.
+//  Created by Tomasz Horowski on 26/06/2024.
 //
 
 import XCTest

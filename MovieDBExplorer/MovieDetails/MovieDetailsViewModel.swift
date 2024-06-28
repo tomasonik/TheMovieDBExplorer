@@ -2,7 +2,7 @@
 //  MoviesDetailsViewModel.swift
 //  MovieDBExplorer
 //
-//  Created by Tomek on 26/06/2024.
+//  Created by Tomasz Horowski on 26/06/2024.
 //
 
 import Foundation
@@ -65,9 +65,10 @@ final class MovieDetailsViewModel {
     private func loadIfNeeded() {
         guard [.empty, .error].contains(viewStateSubject.value) else { return }
         viewStateSubject.value = .loading
+
         movieDetailsProvider
             .map(\.attributesViewModel)
-            .receive(on: DispatchSerialQueue.main)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: handle(completion:), receiveValue: handle(viewModel:))
             .store(in: &cancellables)
     }
@@ -117,7 +118,7 @@ private extension MovieDetails {
         [
             ("Original title", originalTitle),
             ("Genres", formattedGenres),
-            ("Releasd on", releaseDate),
+            ("Released on", releaseDate),
             ("Country", formattedProductionCountries),
             ("Revenue", formattedRevenue)
         ].map { param in

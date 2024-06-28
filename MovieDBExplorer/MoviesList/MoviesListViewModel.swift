@@ -2,7 +2,7 @@
 //  MoviesListDiffableDataSource.swift
 //  MovieDBExplorer
 //
-//  Created by Tomek on 26/06/2024.
+//  Created by Tomasz Horowski on 26/06/2024.
 //
 
 import Foundation
@@ -100,7 +100,6 @@ final class MoviesListViewModel {
         
         Publishers.Zip(getViewModelsPublisher, getSnapshotPublisher)
             .receive(on: DispatchQueue.main)
-            .print()
             .sink(receiveCompletion: handle(completion:), receiveValue: handle(viewModels:snapshot:))
             .store(in: &cancellables)
     }
@@ -159,7 +158,7 @@ final class MoviesListViewModel {
     
     private func handleFavouritingChanges() {
         moviesFavouriting.changesPublisher
-            .receive(on: DispatchSerialQueue.main)
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: reconfigureIsFavourite)
             .store(in: &cancellables)
     }

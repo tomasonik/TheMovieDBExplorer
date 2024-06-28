@@ -2,7 +2,7 @@
 //  File.swift
 //  MovieDBExplorerTests
 //
-//  Created by Tomek on 27/06/2024.
+//  Created by Tomasz Horowski on 27/06/2024.
 //
 
 import Foundation

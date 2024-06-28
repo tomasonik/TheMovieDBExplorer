@@ -2,7 +2,7 @@
 //  MoviesListViewModelTests.swift
 //  MovieDBExplorerTests
 //
-//  Created by Tomek on 27/06/2024.
+//  Created by Tomasz Horowski on 27/06/2024.
 //
 
 import XCTest
@@ -16,11 +16,11 @@ final class MoviesListViewModelTests: XCTestCase {
     private var mockMoviesFavoritingService: MockMoviesFavoritingService!
     private var mockMovesListCoordinator: MockMovesListCoordinator!
     private var stupMoviesResponseProvider: PassthroughSubject<MoviesResponse, Error>!
-    private var spySnapshot: AnyPublisher<[MoviesListViewModel.DataSourceSnapshot], Never>!
-
-    let stubMovie1 = Movie.stub(id: 1, title: "stubbedTitle1"),
-        stubMovie2 = Movie.stub(id: 2, title: "stubbedTitle2"),
-        stubMovie3 = Movie.stub(id: 3, title: "stubbedTitle3")
+    private var spySnapshot: AnyPublisher<MoviesListViewModel.DataSourceSnapshot, Never>!
+    
+    private let stubMovie1 = Movie.stub(id: 1, title: "stubbedTitle1"),
+                stubMovie2 = Movie.stub(id: 2, title: "stubbedTitle2"),
+                stubMovie3 = Movie.stub(id: 3, title: "stubbedTitle3")
     
     private lazy var stubbedMoviesResponse = MoviesResponse(
         results: [stubMovie1, stubMovie2, stubMovie3]
@@ -39,7 +39,7 @@ final class MoviesListViewModelTests: XCTestCase {
             moviesFavouriting: mockMoviesFavoritingService
         )
         
-        spySnapshot = viewModel.snapshotPublisher.collect(1).first().eraseToAnyPublisher()
+        spySnapshot = viewModel.snapshotPublisher.eraseToAnyPublisher()
     }
     
     
@@ -61,7 +61,7 @@ final class MoviesListViewModelTests: XCTestCase {
         stupMoviesResponseProvider.send(stubbedMoviesResponse)
         
         XCTAssertEqual(
-            try awayResult(from: spySnapshot).first?.itemIdentifiers,
+            try getOutput(from: spySnapshot).itemIdentifiers,
             stubbedMoviesResponse.results.map(\.id)
         )
     }
@@ -129,7 +129,7 @@ final class MoviesListViewModelTests: XCTestCase {
         
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
         
-        XCTAssertEqual(try awayResult(from: spySnapshot).last?.reconfiguredItemIdentifiers, [stubMovie3.id])
+        XCTAssertEqual(try getOutput(from: spySnapshot).reconfiguredItemIdentifiers, [stubMovie3.id])
     }
     
     
@@ -139,7 +139,7 @@ final class MoviesListViewModelTests: XCTestCase {
 
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie3.id]
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
-        try awayResult(from: spySnapshot)
+        try givenOutputUpdated(in: spySnapshot)
         
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, true)
     }
@@ -152,8 +152,8 @@ final class MoviesListViewModelTests: XCTestCase {
 
         mockMoviesFavoritingService.stubFavouriteIds = []
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
-        try awayResult(from: spySnapshot)
-        
+        try givenOutputUpdated(in: spySnapshot)
+
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, false)
     }
     
@@ -163,6 +163,6 @@ final class MoviesListViewModelTests: XCTestCase {
     private func givenViewModelsLoaded() throws {
         viewModel.onViewWillAppear()
         stupMoviesResponseProvider.send(stubbedMoviesResponse)
-        try awayResult(from: spySnapshot)
+        try givenOutputUpdated(in: spySnapshot)
     }
 }
