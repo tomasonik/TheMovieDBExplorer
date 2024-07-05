@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import Combine
+import CombineSchedulers
+
 
 struct MovieItemViewModel {
     let id: Int
@@ -43,16 +45,18 @@ final class MoviesListViewModel {
     private let moviesFavouriting: any Favouriting<Movie.Id>
     
     private var cancellables = [AnyCancellable]()
-
+    private let mainScheduler: AnySchedulerOf<DispatchQueue>
     
     init(
         moviesProvider: AnyPublisher<MoviesResponse, Swift.Error>,
         coordinator: MoviesListCoordinating,
-        moviesFavouriting: any Favouriting<Movie.Id>
+        moviesFavouriting: any Favouriting<Movie.Id>,
+        mainScheduler: AnySchedulerOf<DispatchQueue> = .main
     ) {
         self.moviesProvider = moviesProvider
         self.coordinator = coordinator
         self.moviesFavouriting = moviesFavouriting
+        self.mainScheduler = mainScheduler
         handleFavouritingChanges()
     }
     
@@ -104,7 +108,7 @@ final class MoviesListViewModel {
             .map(snapshot(from:))
         
         Publishers.Zip(getViewModelsPublisher, getSnapshotPublisher)
-            .receive(on: DispatchQueue.main)
+            .receive(on: mainScheduler)
             .sink(receiveCompletion: handle(completion:), receiveValue: handle(viewModels:snapshot:))
             .store(in: &cancellables)
     }
@@ -169,7 +173,7 @@ final class MoviesListViewModel {
     
     private func handleFavouritingChanges() {
         moviesFavouriting.changesPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: mainScheduler)
             .sink(receiveValue: reconfigureIsFavourite)
             .store(in: &cancellables)
     }

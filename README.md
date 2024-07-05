@@ -16,3 +16,4 @@ Demo of testable MVVM-C architecture in Swift/Combine/UIKit
 
 ## Dependencies (SPM)
 - [SDWebImage](https://github.com/SDWebImage/SDWebImage)
+- [combine-schedulers](https://github.com/pointfreeco/combine-schedulers)

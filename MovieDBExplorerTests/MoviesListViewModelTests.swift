@@ -7,6 +7,7 @@
 
 import XCTest
 import Combine
+import CombineSchedulers
 @testable import MovieDBExplorer
 
 
@@ -16,16 +17,21 @@ final class MoviesListViewModelTests: XCTestCase {
     private var mockMoviesFavoritingService: MockMoviesFavoritingService!
     private var mockMovesListCoordinator: MockMovesListCoordinator!
     private var stupMoviesResponseProvider: PassthroughSubject<MoviesResponse, Error>!
+    
     private var spySnapshot: AnyPublisher<MoviesListViewModel.DataSourceSnapshot, Never>!
+    private var spySnapshots = [MoviesListViewModel.DataSourceSnapshot]()
     
     private let stubMovie1 = Movie.stub(id: 1, title: "stubbedTitle1"),
                 stubMovie2 = Movie.stub(id: 2, title: "stubbedTitle2"),
                 stubMovie3 = Movie.stub(id: 3, title: "stubbedTitle3")
     
+    private let immediateScheduler: AnySchedulerOf<DispatchQueue> = .immediate
+    
     private lazy var stubbedMoviesResponse = MoviesResponse(
         results: [stubMovie1, stubMovie2, stubMovie3]
     )
     
+    private var cancellables = [AnyCancellable]()
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -36,10 +42,14 @@ final class MoviesListViewModelTests: XCTestCase {
         viewModel = .init(
             moviesProvider: stupMoviesResponseProvider.eraseToAnyPublisher(),
             coordinator: mockMovesListCoordinator,
-            moviesFavouriting: mockMoviesFavoritingService
+            moviesFavouriting: mockMoviesFavoritingService,
+            mainScheduler: immediateScheduler
         )
         
         spySnapshot = viewModel.snapshotPublisher.eraseToAnyPublisher()
+        viewModel.snapshotPublisher
+            .append(to: \.spySnapshots, on: self)
+            .store(in: &cancellables)
     }
     
     
@@ -49,6 +59,7 @@ final class MoviesListViewModelTests: XCTestCase {
         mockMoviesFavoritingService = nil
         mockMovesListCoordinator = nil
         spySnapshot = nil
+        cancellables = []
         try super.tearDownWithError()
     }
 
@@ -61,14 +72,14 @@ final class MoviesListViewModelTests: XCTestCase {
         stupMoviesResponseProvider.send(stubbedMoviesResponse)
         
         XCTAssertEqual(
-            try getOutput(from: spySnapshot).itemIdentifiers,
+            spySnapshots.last?.itemIdentifiers,
             stubbedMoviesResponse.results.map(\.id)
         )
     }
     
     
     func testOnViewVillAppear_RequestSucceeds_ReturnsViewModel() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         XCTAssertEqual(
             viewModel.movieItem(with: stubMovie2.id)?.title,
@@ -82,7 +93,7 @@ final class MoviesListViewModelTests: XCTestCase {
     func testOnViewVillAppear_HasFavoriteItem_ReturnsFavouriteViewModel() throws {
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie2.id]
         
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         XCTAssertEqual(
             viewModel.movieItem(with: stubMovie2.id)?.isFavourite,
@@ -92,7 +103,7 @@ final class MoviesListViewModelTests: XCTestCase {
     
     
     func testOnViewVillAppear_NasNoFavoriteItem_ReturnsNoFavouriteViewModel() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         XCTAssertEqual(
             viewModel.movieItem(with: stubMovie2.id)?.isFavourite,
@@ -105,7 +116,7 @@ final class MoviesListViewModelTests: XCTestCase {
     
     func testToggle_IsFavourite_TogglesItem() throws {
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie1.id]
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         viewModel.movieItem(with: stubMovie1.id)?.toogleFavourite()
         
@@ -114,7 +125,7 @@ final class MoviesListViewModelTests: XCTestCase {
 
 
     func testToggle_IsNotFavourite_TogglesItem() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         viewModel.movieItem(with: stubMovie1.id)?.toogleFavourite()
         
@@ -125,21 +136,20 @@ final class MoviesListViewModelTests: XCTestCase {
     // MARK: -
     
     func testRefreshFavoriting_HasRefreshedViewModel_ReconfigureSnapshot() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
         
-        XCTAssertEqual(try getOutput(from: spySnapshot).reconfiguredItemIdentifiers, [stubMovie3.id])
+        XCTAssertEqual(spySnapshots.last?.reconfiguredItemIdentifiers, [stubMovie3.id])
     }
     
     
     func testRefreshFavoriting_BecomesFavourite_MovieItemIsUpdated() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, false)
 
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie3.id]
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
-        try givenOutputUpdated(in: spySnapshot)
         
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, true)
     }
@@ -147,12 +157,11 @@ final class MoviesListViewModelTests: XCTestCase {
     
     func testRefreshFavoriting_BecomesNotFavourite_MovieItemIsUpdated() throws {
         mockMoviesFavoritingService.stubFavouriteIds = [stubMovie3.id]
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, true)
 
         mockMoviesFavoritingService.stubFavouriteIds = []
         mockMoviesFavoritingService.stubChangesPublisher.send(stubMovie3.id)
-        try givenOutputUpdated(in: spySnapshot)
 
         XCTAssertEqual(viewModel.movieItem(with: stubMovie3.id)?.isFavourite, false)
     }
@@ -161,23 +170,23 @@ final class MoviesListViewModelTests: XCTestCase {
     // MARK: -
     
     func testTappedItem_NavigatesWithMovieId() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         viewModel.tappedItem(movieId: stubMovie1.id)
         XCTAssertEqual(mockMovesListCoordinator.spyOnEnteringMovieId, [stubMovie1.id])
     }
     
     
     func testTappedItem_NavigatesWithMovieTitle() throws {
-        try givenViewModelsLoaded()
+        givenViewModelsLoaded()
         viewModel.tappedItem(movieId: stubMovie1.id)
         XCTAssertEqual(mockMovesListCoordinator.spyOnEnteringMovieTitle, [stubMovie1.title])
     }
     
     // MARK: -
     
-    private func givenViewModelsLoaded() throws {
+    private func givenViewModelsLoaded() {
         viewModel.onViewWillAppear()
         stupMoviesResponseProvider.send(stubbedMoviesResponse)
-        try givenOutputUpdated(in: spySnapshot)
+        XCTAssertEqual(spySnapshots.last?.itemIdentifiers, stubbedMoviesResponse.results.map { $0.id })
     }
 }
