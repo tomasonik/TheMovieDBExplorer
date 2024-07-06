@@ -91,15 +91,15 @@ final class MovieDetailsViewController: UIViewController {
         title = viewModel.title
         view.backgroundColor = .white
         
-        viewModel.viewModelPublisher
+        viewModel.$viewModel
             .sink(receiveValue: configureDetails(movieAttributes:))
             .store(in: &cancellable)
         
-        viewModel.viewStatePublisher
+        viewModel.$viewState
             .sink(receiveValue: configure(viewState:))
             .store(in: &cancellable)
         
-        viewModel.isFavouritePublisher
+        viewModel.$isFavourite
             .sink(receiveValue: configureBarButtonItem)
             .store(in: &cancellable)
     }

@@ -18,7 +18,6 @@ final class MoviesListViewModelTests: XCTestCase {
     private var mockMovesListCoordinator: MockMovesListCoordinator!
     private var stupMoviesResponseProvider: PassthroughSubject<MoviesResponse, Error>!
     
-    private var spySnapshot: AnyPublisher<MoviesListViewModel.DataSourceSnapshot, Never>!
     private var spySnapshots = [MoviesListViewModel.DataSourceSnapshot]()
     
     private let stubMovie1 = Movie.stub(id: 1, title: "stubbedTitle1"),
@@ -46,8 +45,7 @@ final class MoviesListViewModelTests: XCTestCase {
             mainScheduler: immediateScheduler
         )
         
-        spySnapshot = viewModel.snapshotPublisher.eraseToAnyPublisher()
-        viewModel.snapshotPublisher
+        viewModel.$snapshot
             .append(to: \.spySnapshots, on: self)
             .store(in: &cancellables)
     }
@@ -58,7 +56,7 @@ final class MoviesListViewModelTests: XCTestCase {
         stupMoviesResponseProvider = nil
         mockMoviesFavoritingService = nil
         mockMovesListCoordinator = nil
-        spySnapshot = nil
+        spySnapshots = []
         cancellables = []
         try super.tearDownWithError()
     }
