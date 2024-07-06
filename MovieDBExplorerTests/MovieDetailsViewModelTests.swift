@@ -190,13 +190,13 @@ final class MovieDetailsViewModelTests: XCTestCase {
         spyViewStates = []
         spyIsFavourite = []
         
-        viewModel.viewModelPublisher
+        viewModel.$viewModel
             .append(to: \.spyViewModels, on: self)
             .store(in: &cancellables)
-        viewModel.viewStatePublisher
+        viewModel.$viewState
             .append(to: \.spyViewStates, on: self)
             .store(in: &cancellables)
-        viewModel.isFavouritePublisher
+        viewModel.$isFavourite
             .append(to: \.spyIsFavourite, on: self)
             .store(in: &cancellables)
     }

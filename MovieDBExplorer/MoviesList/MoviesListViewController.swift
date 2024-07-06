@@ -77,7 +77,7 @@ final class MoviesListViewController: UIViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.dataSource = dataSource
         
-        viewModel.snapshotPublisher
+        viewModel.$snapshot
             .sink(receiveValue: handle(snapshot:))
             .store(in: &cancellables)
     }

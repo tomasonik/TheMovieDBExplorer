@@ -31,14 +31,12 @@ final class MoviesListViewModel {
     
     // TODO: add localizations for title
     let title = "Playing Now"
-    var snapshotPublisher: AnyPublisher<DataSourceSnapshot, Never> { snapshotSubject.eraseToAnyPublisher() }
     
     // TODO: add view state handling in the view
-    private let viewStateSubject = ViewStateSubject(.empty)
-    private let snapshotSubject = PassthroughSubject<DataSourceSnapshot, Never>()
+    @Published private(set) var viewState: ViewState = .empty
+    @Published private(set) var snapshot: DataSourceSnapshot = .emptySection
     
     private var viewModels = [Movie.Id: MovieItemViewModel]()
-    private var snapshot: DataSourceSnapshot = .emptySection
     
     private let moviesProvider: AnyPublisher<MoviesResponse, Swift.Error>
     private let coordinator: MoviesListCoordinating
@@ -82,13 +80,12 @@ final class MoviesListViewModel {
     // MARK: -
     
     private func loadMoviesIfNeeded() {
-        guard viewStateSubject.value != .loading else { return }
+        guard viewState != .loading else { return }
         loadMovies()
     }
     
-    
     private func loadMovies() {
-        viewStateSubject.value = .loading
+        viewState = .loading
         let favouriteIds = moviesFavouriting.favouriteIds
         
         let viewModelsPublisher = moviesProvider
@@ -124,9 +121,8 @@ final class MoviesListViewModel {
     
     private func handle(viewModels: [Movie.Id: MovieItemViewModel], snapshot: DataSourceSnapshot) {
         self.viewModels = viewModels
-        viewStateSubject.value = .loaded
+        viewState = .loaded
         self.snapshot = snapshot
-        snapshotSubject.send(snapshot)
     }
     
 
@@ -134,9 +130,9 @@ final class MoviesListViewModel {
     private func handle(completion: Subscribers.Completion<Error>) {
         switch completion {
         case .finished:
-            viewStateSubject.value = .loaded
+            viewState = .loaded
         case .failure:
-            viewStateSubject.value = .error
+            viewState = .error
         }
     }
     
@@ -168,7 +164,7 @@ final class MoviesListViewModel {
         
         var snapshot = self.snapshot
         snapshot.reconfigureItems([viewModel.id])
-        snapshotSubject.send(snapshot)
+        self.snapshot = snapshot
     }
     
     private func handleFavouritingChanges() {

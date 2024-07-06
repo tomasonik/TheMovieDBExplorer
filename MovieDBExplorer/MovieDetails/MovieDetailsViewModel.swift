@@ -24,12 +24,10 @@ struct MovieAttributesViewModel: Equatable {
 final class MovieDetailsViewModel {
     
     let title: String
-    var isFavouritePublisher: AnyPublisher<Bool, Never> { isFavouriteSubject.eraseToAnyPublisher() }
-    var viewStatePublisher: ViewStatePublisher { viewStateSubject.eraseToAnyPublisher() }
-    var viewModelPublisher: AnyPublisher<MovieAttributesViewModel?, Never> { viewModelSubject.eraseToAnyPublisher() }
-    
-    private let isFavouriteSubject: CurrentValueSubject<Bool, Never>
-    private let viewStateSubject = ViewStateSubject(.empty)
+    @Published private(set) var isFavourite: Bool
+    @Published private(set) var viewState: ViewState = .empty
+    @Published private(set) var viewModel: MovieAttributesViewModel?
+        
     private let viewModelSubject = CurrentValueSubject<MovieAttributesViewModel?, Never>(nil)
     
     private var cancellables = [AnyCancellable]()
@@ -52,7 +50,7 @@ final class MovieDetailsViewModel {
         self.movieDetailsProvider = movieDetailsProvider
         self.moviesFavouriting = moviesFavouriting
         self.mainScheduler = mainScheduler
-        isFavouriteSubject = .init(moviesFavouriting.isFavourite(id: movieId))
+        isFavourite = moviesFavouriting.isFavourite(id: movieId)
     }
     
     // MARK: -
@@ -62,14 +60,14 @@ final class MovieDetailsViewModel {
     }
     
     func toogleFavourite() {
-        isFavouriteSubject.value = moviesFavouriting.toogle(id: movieId)
+        isFavourite = moviesFavouriting.toogle(id: movieId)
     }
     
     // MARK: -
     
     private func loadIfNeeded() {
-        guard [.empty, .error].contains(viewStateSubject.value) else { return }
-        viewStateSubject.value = .loading
+        guard [.empty, .error].contains(viewState) else { return }
+        viewState = .loading
 
         movieDetailsProvider
             .map(\.attributesViewModel)
@@ -79,15 +77,15 @@ final class MovieDetailsViewModel {
     }
     
     private func handle(viewModel: MovieAttributesViewModel) {
-        viewModelSubject.send(viewModel)
+        self.viewModel = viewModel
     }
     
     private func handle(completion: Subscribers.Completion<any Error>) {
         switch completion {
         case .failure:
-            viewStateSubject.send(.error)
+            viewState = .error
         case .finished:
-            viewStateSubject.send(.loaded)
+            viewState = .loaded
         }
     }
 
