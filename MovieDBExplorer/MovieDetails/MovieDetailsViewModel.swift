@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CombineSchedulers
 
 struct MovieAttributesViewModel: Equatable {
     
@@ -30,7 +31,9 @@ final class MovieDetailsViewModel {
     private let isFavouriteSubject: CurrentValueSubject<Bool, Never>
     private let viewStateSubject = ViewStateSubject(.empty)
     private let viewModelSubject = CurrentValueSubject<MovieAttributesViewModel?, Never>(nil)
+    
     private var cancellables = [AnyCancellable]()
+    private let mainScheduler: AnySchedulerOf<DispatchQueue>
     
     private let movieId: Movie.Id
     
@@ -41,12 +44,14 @@ final class MovieDetailsViewModel {
         title: String,
         movieId: Movie.Id,
         movieDetailsProvider: AnyPublisher<MovieDetails, Error>,
-        moviesFavouriting: any Favouriting<Movie.Id>
+        moviesFavouriting: any Favouriting<Movie.Id>,
+        mainScheduler: AnySchedulerOf<DispatchQueue> = .main
     ) {
         self.title = title
         self.movieId = movieId
         self.movieDetailsProvider = movieDetailsProvider
         self.moviesFavouriting = moviesFavouriting
+        self.mainScheduler = mainScheduler
         isFavouriteSubject = .init(moviesFavouriting.isFavourite(id: movieId))
     }
     
@@ -68,21 +73,21 @@ final class MovieDetailsViewModel {
 
         movieDetailsProvider
             .map(\.attributesViewModel)
-            .receive(on: DispatchQueue.main)
+            .receive(on: mainScheduler)
             .sink(receiveCompletion: handle(completion:), receiveValue: handle(viewModel:))
             .store(in: &cancellables)
     }
     
     private func handle(viewModel: MovieAttributesViewModel) {
-        viewModelSubject.value = viewModel
+        viewModelSubject.send(viewModel)
     }
     
     private func handle(completion: Subscribers.Completion<any Error>) {
         switch completion {
         case .failure:
-            viewStateSubject.value = .error
+            viewStateSubject.send(.error)
         case .finished:
-            viewStateSubject.value = .loaded
+            viewStateSubject.send(.loaded)
         }
     }
 

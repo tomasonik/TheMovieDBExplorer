@@ -37,10 +37,12 @@
 		4E04C45D2C2DEC8000E07ADE /* MockMovesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C45C2C2DEC8000E07ADE /* MockMovesListCoordinator.swift */; };
 		4E04C45F2C2DED1800E07ADE /* MockMoviesFavoritingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C45E2C2DED1800E07ADE /* MockMoviesFavoritingService.swift */; };
 		4E04C4612C2DF20400E07ADE /* Movie+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C4602C2DF20400E07ADE /* Movie+Stub.swift */; };
-		4E04C4632C2DF30500E07ADE /* Publisher+Get.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04C4622C2DF30500E07ADE /* Publisher+Get.swift */; };
 		4E4CC5DA2C2E8C0B004A6E2D /* MovieDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4CC5D92C2E8C0B004A6E2D /* MovieDetailsViewModelTests.swift */; };
 		4E4CC5DC2C2E8DB4004A6E2D /* MovieDetails+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4CC5DB2C2E8DB4004A6E2D /* MovieDetails+Stub.swift */; };
 		4E4CC5DE2C2EBE1D004A6E2D /* Error+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4CC5DD2C2EBE1D004A6E2D /* Error+Stub.swift */; };
+		4EC5C5002C37D7B900F92686 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 4EC5C4FF2C37D7B900F92686 /* CombineSchedulers */; };
+		4EC5C5022C37D7BF00F92686 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = 4EC5C5012C37D7BF00F92686 /* CombineSchedulers */; };
+		4EC5C5042C37DDB000F92686 /* Publisher+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC5C5032C37DDB000F92686 /* Publisher+Append.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,10 +88,10 @@
 		4E04C45C2C2DEC8000E07ADE /* MockMovesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovesListCoordinator.swift; sourceTree = "<group>"; };
 		4E04C45E2C2DED1800E07ADE /* MockMoviesFavoritingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMoviesFavoritingService.swift; sourceTree = "<group>"; };
 		4E04C4602C2DF20400E07ADE /* Movie+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Movie+Stub.swift"; sourceTree = "<group>"; };
-		4E04C4622C2DF30500E07ADE /* Publisher+Get.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Get.swift"; sourceTree = "<group>"; };
 		4E4CC5D92C2E8C0B004A6E2D /* MovieDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		4E4CC5DB2C2E8DB4004A6E2D /* MovieDetails+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieDetails+Stub.swift"; sourceTree = "<group>"; };
 		4E4CC5DD2C2EBE1D004A6E2D /* Error+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Stub.swift"; sourceTree = "<group>"; };
+		4EC5C5032C37DDB000F92686 /* Publisher+Append.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Append.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EC5C5002C37D7B900F92686 /* CombineSchedulers in Frameworks */,
 				4E04C4492C2D51CA00E07ADE /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EC5C5022C37D7BF00F92686 /* CombineSchedulers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +210,7 @@
 				4E04C43C2C2C42EF00E07ADE /* UICollectionViewCell+Configurable.swift */,
 				4E04C43E2C2C432F00E07ADE /* UIView+Anchors.swift */,
 				4E04C4402C2C43AC00E07ADE /* NSDiffableDataSourceSnapshot+EmptySection.swift */,
+				4EC5C5032C37DDB000F92686 /* Publisher+Append.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -249,7 +254,6 @@
 			children = (
 				4E04C45C2C2DEC8000E07ADE /* MockMovesListCoordinator.swift */,
 				4E04C45E2C2DED1800E07ADE /* MockMoviesFavoritingService.swift */,
-				4E04C4622C2DF30500E07ADE /* Publisher+Get.swift */,
 				4E04C4602C2DF20400E07ADE /* Movie+Stub.swift */,
 				4E4CC5DB2C2E8DB4004A6E2D /* MovieDetails+Stub.swift */,
 				4E4CC5DD2C2EBE1D004A6E2D /* Error+Stub.swift */,
@@ -275,6 +279,7 @@
 			name = MovieDBExplorer;
 			packageProductDependencies = (
 				4E04C4482C2D51CA00E07ADE /* SDWebImage */,
+				4EC5C4FF2C37D7B900F92686 /* CombineSchedulers */,
 			);
 			productName = MovieDBExplorer;
 			productReference = 4E04C3F02C2BF9DA00E07ADE /* MovieDBExplorer.app */;
@@ -295,6 +300,7 @@
 			);
 			name = MovieDBExplorerTests;
 			packageProductDependencies = (
+				4EC5C5012C37D7BF00F92686 /* CombineSchedulers */,
 			);
 			productName = MovieDBExplorerTests;
 			productReference = 4E04C4062C2BF9DC00E07ADE /* MovieDBExplorerTests.xctest */;
@@ -330,6 +336,7 @@
 			mainGroup = 4E04C3E72C2BF9DA00E07ADE;
 			packageReferences = (
 				4E04C4472C2D51CA00E07ADE /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				4EC5C4FE2C37D7B000F92686 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = 4E04C3F12C2BF9DA00E07ADE /* Products */;
 			projectDirPath = "";
@@ -375,6 +382,7 @@
 				4E04C44E2C2D613300E07ADE /* ViewState.swift in Sources */,
 				4E04C4502C2D773300E07ADE /* Favouriting.swift in Sources */,
 				4E04C4352C2C3FE600E07ADE /* MoviesListCoordinator.swift in Sources */,
+				4EC5C5042C37DDB000F92686 /* Publisher+Append.swift in Sources */,
 				4E04C42C2C2C02A700E07ADE /* Movie.swift in Sources */,
 				4E04C42E2C2C02F200E07ADE /* MoviesResponse.swift in Sources */,
 				4E04C4282C2BFB3C00E07ADE /* MoviesListViewModel.swift in Sources */,
@@ -396,7 +404,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E4CC5DC2C2E8DB4004A6E2D /* MovieDetails+Stub.swift in Sources */,
-				4E04C4632C2DF30500E07ADE /* Publisher+Get.swift in Sources */,
 				4E04C45F2C2DED1800E07ADE /* MockMoviesFavoritingService.swift in Sources */,
 				4E04C45D2C2DEC8000E07ADE /* MockMovesListCoordinator.swift in Sources */,
 				4E04C4612C2DF20400E07ADE /* Movie+Stub.swift in Sources */,
@@ -690,6 +697,14 @@
 				version = 5.19.3;
 			};
 		};
+		4EC5C4FE2C37D7B000F92686 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/combine-schedulers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -697,6 +712,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E04C4472C2D51CA00E07ADE /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
+		};
+		4EC5C4FF2C37D7B900F92686 /* CombineSchedulers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4EC5C4FE2C37D7B000F92686 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			productName = CombineSchedulers;
+		};
+		4EC5C5012C37D7BF00F92686 /* CombineSchedulers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4EC5C4FE2C37D7B000F92686 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			productName = CombineSchedulers;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
